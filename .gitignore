@@ -1,0 +1,6 @@
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Data and model files
+*.csv
+*.pkl
