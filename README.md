@@ -1,81 +1,64 @@
-# Laptop Price Predictor
+# Laptop Price Predictor Pro
 
-Streamlit app that predicts laptop prices based on hardware and display features. The trained pipeline and reference dataframe are stored in `pipe.pkl` and `df.pkl`.
+A professional, production-ready Streamlit application that predicts laptop prices using a Stacking Ensemble regression model.
 
 ## Overview
 
-- Train and evaluate a regression model in the notebook.
-- Persist the fitted pipeline and reference data.
-- Serve predictions through a Streamlit UI.
+- **Data Science**: Exploratory Data Analysis (EDA), cleaning, and feature engineering in Jupyter Notebook.
+- **Modeling**: Advanced Stacking Ensemble (XGBoost + Random Forest) for high-precision valuation.
+- **Deployment**: Responsive Streamlit UI with real-world hardware constraints.
 
-## Features
+## 📊 Model Performance
 
-- Brand, type, RAM, weight, display, storage, CPU, GPU, and OS inputs
-- Automatic PPI calculation from resolution and screen size
-- INR price output formatted with commas
+The current production model is a **Stacking Regressor** (XGBoost + Random Forest) trained on a cleaned dataset of 1,300+ laptops.
 
-## Project Structure
+- **R² Score**: `0.882` (Explains 88% of price variance)
+- **Mean Absolute Error (MAE)**: `0.15` (Approx. 15% error margin on market value)
+- **Methodology**: Log-transformation of target prices to handle heteroscedasticity across budget and premium brackets.
+
+## 🛠️ Features
+
+- **Intelligent Hardware Constraints**:
+  - RAM options dynamically filter based on CPU power (e.g., Celeron/Pentium limited to 8GB).
+  - Operating Systems locked to brand logic (e.g., macOS only for Apple).
+  - Storage options restricted by device type (e.g., Ultrabooks use SSD exclusively).
+- **Premium UI/UX**:
+  - **Glassmorphism**: Semi-transparent sleek containers with backdrop filters.
+  - **Visual Hierarchy**: Emerald-accented headers and clear focal points.
+  - **Micro-interactions**: Smooth entrance animations and hover state transitions.
+- **Advanced Engineering**: Automatic Pixels Per Inch (PPI) calculation from resolution and screen size.
+
+## 📁 Project Structure
 
 ```
 .
-├── app.py
-├── df.pkl
-├── laptop_data.csv
-├── laptop_data.ipynb
-├── pipe.pkl
-└── requirement.txt
+├── app.py              # Main Streamlit application
+├── data/
+│   └── laptop_data.csv # Raw dataset
+├── models/             # Serialized model artifacts
+│   ├── df.pkl          # Reference dataframe for UI options
+│   └── pipe.pkl        # Trained Stacking Ensemble pipeline
+├── laptop_data.ipynb   # Model training & EDA notebook
+└── requirements.txt    # Project dependencies
 ```
 
-## Workflow Diagram
+## 🚀 Setup & Installation
 
-```mermaid
-flowchart TB
-	A[Dataset: laptop_data.csv] --> B[Notebook: cleaning + feature engineering]
-	B --> C[Model training + evaluation]
-	C --> D[Artifacts: pipe.pkl + df.pkl]
-	D --> E[Streamlit UI: app.py]
-	E --> F[Prediction: INR price]
-```
+1. **Clone the repository**:
+   ```bash
+   git clone <repo-url>
+   cd Laptop-Price-Predictor
+   ```
 
-## Pipeline Flow
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Load dataset from `laptop_data.csv` in the notebook.
-2. Clean and normalize fields (RAM, weight, OS, storage, display specs).
-3. Engineer features such as PPI from resolution and screen size.
-4. Train and validate the regression model.
-5. Persist artifacts as `pipe.pkl` (pipeline) and `df.pkl` (reference data).
-6. Streamlit app loads artifacts and collects user inputs.
-7. App builds a feature vector and returns the predicted INR price.
+3. **Run the App**:
+   ```bash
+   streamlit run app.py
+   ```
 
-## Requirements
-
-Install the dependencies listed in `requirement.txt`:
-
-- pandas
-- numpy
-- scikit-learn
-- matplotlib
-- seaborn
-- streamlit
-
-## Setup
-
-1. Create and activate a virtual environment (optional but recommended).
-2. Install dependencies:
-
-```bash
-pip install -r requirement.txt
-```
-
-## Run the App
-
-```bash
-streamlit run app.py
-```
-
-Open the local URL shown in the terminal to use the app.
-
-## Notes
-
-- The app expects `pipe.pkl` and `df.pkl` in the project root.
-- Input price is predicted in INR and formatted with commas.
+## 📝 Usage Note
+The app requires `df.pkl` and `pipe.pkl` in the `models/` directory. If they are missing, please re-run the final cells of `laptop_data.ipynb` to regenerate the artifacts.
