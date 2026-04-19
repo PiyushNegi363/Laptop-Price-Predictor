@@ -130,16 +130,19 @@ st.markdown("""
 # --- ARTIFACT LOADING ---
 @st.cache_resource
 def load_assets():
+    """Loads the model and reference dataframe from the models/ directory."""
     try:
+        # Use absolute paths relative to this file
         base_path = os.path.dirname(__file__)
         pipe_path = os.path.join(base_path, 'models', 'pipe.pkl')
         df_path = os.path.join(base_path, 'models', 'df.pkl')
+        
+        logger.info(f"Loading artifacts. Path: {base_path}")
         
         if not os.path.exists(pipe_path) or not os.path.exists(df_path):
             logger.error(f"Missing artifacts at {pipe_path} or {df_path}")
             return None, None
             
-        logger.info("Loading model artifacts...")
         with open(pipe_path, 'rb') as f:
             pipe_loaded = pickle.load(f)
         with open(df_path, 'rb') as f:
@@ -155,8 +158,13 @@ pipe, df = load_assets()
 
 def main():
     if df is None or pipe is None:
-        st.error("⚠️ Critical Error: Model artifacts not found. Please check 'models/' directory.")
-        st.info("System requirements: 'models/df.pkl' and 'models/pipe.pkl' must be present.")
+        st.error("⚠️ Critical Error: Model artifacts not found.")
+        st.info(f"**Application Root**: `{os.path.dirname(__file__)}`")
+        try:
+            models_dir = os.path.join(os.path.dirname(__file__), 'models')
+            st.info(f"**Models Dir Contents**: `{os.listdir(models_dir)}`")
+        except Exception as e:
+            st.error(f"Cannot access 'models' folder: {e}")
         st.stop()
 
     # --- HEADER ---
